@@ -112,6 +112,28 @@ export const commonApi = createApi({
         }
       },
     }),
+    removeUser: build.mutation<void, User['id']>({
+      query: (id: number) => ({
+        url: `/user/${id}`,
+        method: 'DELETE',
+      }),
+      async onQueryStarted(id, {dispatch, queryFulfilled}) {
+        const patchResult = dispatch(
+          commonApi.util.updateQueryData(
+            'fetchUsers',
+            undefined,
+            (draft: UsersFetch) => {
+              return {users: draft.users.filter(cartItem => cartItem.id !== id)};
+            },
+          ),
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          // patchResult.undo();
+        }
+      },
+    }),
   })
 });
 
