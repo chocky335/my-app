@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://dummyjson.com/users';
+export const BASE_URL = 'https://dummyjson.com';
